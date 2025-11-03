@@ -335,7 +335,11 @@ protected:
   mutable Eigen::MatrixXd mPartialNullspaceCache;
 
   /// Cache for the null space SVD
+#if EIGEN_VERSION_AT_LEAST(5, 0, 0)
+  mutable Eigen::JacobiSVD<math::Jacobian, Eigen::ComputeFullV> mSVDCache;
+#else
   mutable Eigen::JacobiSVD<math::Jacobian> mSVDCache;
+#endif
 
   /// Cache for Jacobians
   mutable math::Jacobian mJacCache;

@@ -199,7 +199,11 @@ void BalanceConstraint::evalGradient(
 
       mEEJacCache = skel->getLinearJacobian(ee);
 
+#if EIGEN_VERSION_AT_LEAST(5, 0, 0)
+      mSVDCache.compute(mEEJacCache);
+#else
       mSVDCache.compute(mEEJacCache, Eigen::ComputeFullV);
+#endif
       math::extractNullSpace(mSVDCache, mPartialNullSpaceCache);
 
       if (mPartialNullSpaceCache.rows() > 0
@@ -225,7 +229,11 @@ void BalanceConstraint::evalGradient(
 
       mComJacCache = skel->getCOMLinearJacobian();
 
+#if EIGEN_VERSION_AT_LEAST(5, 0, 0)
+      mSVDCache.compute(mComJacCache);
+#else
       mSVDCache.compute(mComJacCache, Eigen::ComputeFullV);
+#endif
       math::extractNullSpace(mSVDCache, mPartialNullSpaceCache);
 
       if (mPartialNullSpaceCache.rows() > 0
@@ -256,7 +264,11 @@ void BalanceConstraint::evalGradient(
 
       mComJacCache = skel->getCOMLinearJacobian();
 
+#if EIGEN_VERSION_AT_LEAST(5, 0, 0)
+      mSVDCache.compute(mComJacCache);
+#else
       mSVDCache.compute(mComJacCache, Eigen::ComputeFullV);
+#endif
       math::extractNullSpace(mSVDCache, mPartialNullSpaceCache);
 
       if (mPartialNullSpaceCache.rows() > 0

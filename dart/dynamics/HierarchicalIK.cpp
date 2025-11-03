@@ -304,7 +304,11 @@ const std::vector<Eigen::MatrixXd>& HierarchicalIK::computeNullSpaces() const
         ++d;
       }
 
+#if EIGEN_VERSION_AT_LEAST(5, 0, 0)
+      mSVDCache.compute(mJacCache);
+#else
       mSVDCache.compute(mJacCache, Eigen::ComputeFullV);
+#endif
       math::extractNullSpace(mSVDCache, mPartialNullspaceCache);
 
       if (mPartialNullspaceCache.rows() > 0

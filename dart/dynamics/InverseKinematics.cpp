@@ -1680,7 +1680,11 @@ void InverseKinematics::Objective::evalGradient(
     mIK->setPositions(_x);
 
     const math::Jacobian& J = mIK->computeJacobian();
+#if EIGEN_VERSION_AT_LEAST(5, 0, 0)
+    mSVDCache.compute(J);
+#else
     mSVDCache.compute(J, Eigen::ComputeFullV);
+#endif
     math::extractNullSpace(mSVDCache, mNullSpaceCache);
     _grad += mNullSpaceCache * mNullSpaceCache.transpose() * mGradCache;
   }

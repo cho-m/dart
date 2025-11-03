@@ -1351,7 +1351,11 @@ protected:
   Eigen::VectorXd mGradCache;
 
   /// Cache for the null space SVD
+#if EIGEN_VERSION_AT_LEAST(5, 0, 0)
+  Eigen::JacobiSVD<math::Jacobian, Eigen::ComputeFullV> mSVDCache;
+#else
   Eigen::JacobiSVD<math::Jacobian> mSVDCache;
+#endif
   // TODO(JS): Need to define aligned operator new for this?
 
   /// Cache for the null space

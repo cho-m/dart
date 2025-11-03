@@ -476,7 +476,13 @@ inline double wrapToPi(double angle)
 }
 
 template <typename MatrixType, typename ReturnType>
-void extractNullSpace(const Eigen::JacobiSVD<MatrixType>& _SVD, ReturnType& _NS)
+void extractNullSpace(
+#if EIGEN_VERSION_AT_LEAST(5, 0, 0)
+    const Eigen::JacobiSVD<MatrixType, Eigen::ComputeFullV>& _SVD,
+#else
+    const Eigen::JacobiSVD<MatrixType>& _SVD,
+#endif
+    ReturnType& _NS)
 {
   int rank = 0;
   // TODO(MXG): Replace this with _SVD.rank() once the latest Eigen is released
@@ -497,7 +503,11 @@ void extractNullSpace(const Eigen::JacobiSVD<MatrixType>& _SVD, ReturnType& _NS)
 template <typename MatrixType, typename ReturnType>
 void computeNullSpace(const MatrixType& _M, ReturnType& _NS)
 {
+#if EIGEN_VERSION_AT_LEAST(5, 0, 0)
+  Eigen::JacobiSVD<MatrixType, Eigen::ComputeFullV> svd(_M);
+#else
   Eigen::JacobiSVD<MatrixType> svd(_M, Eigen::ComputeFullV);
+#endif
   extractNullSpace(svd, _NS);
 }
 

@@ -183,7 +183,11 @@ protected:
   math::LinearJacobian mEEJacCache;
 
   /// Cache for the SVD
+#if EIGEN_VERSION_AT_LEAST(5, 0, 0)
+  Eigen::JacobiSVD<math::LinearJacobian, Eigen::ComputeFullV> mSVDCache;
+#else
   Eigen::JacobiSVD<math::LinearJacobian> mSVDCache;
+#endif
 
   /// Cache for the full null space
   Eigen::MatrixXd mNullSpaceCache;
